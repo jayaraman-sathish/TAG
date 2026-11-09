@@ -1,0 +1,79 @@
+# =====================================================================
+#  TagTrail — the whole thing, in two containers.
+#
+#      docker compose up --build
+#
+#  Then open http://localhost:5000
+#
+#  Nothing needs to be installed on the machine except Docker. No psql on
+#  PATH, no PowerShell execution policy, no .NET SDK version to match, and
+#  no password prompt to fight: the database is created, the schema is
+#  loaded and the seed is applied automatically the first time it starts.
+# =====================================================================
+
+services:
+
+  db:
+    image: postgres:16
+    container_name: tagtrail-db
+    environment:
+      POSTGRES_USER: tagtrail
+      POSTGRES_PASSWORD: tagtrail
+      POSTGRES_DB: tagtrail
+      # Deterministic collation, so ORDER BY on asset codes behaves the same
+      # here as on the plant server.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    ports:
+      # Exposed so pgAdmin or psql on the host can still reach it if you want
+      # to poke around. 5433 to avoid colliding with the Postgres already
+      # installed on this machine.
+      - "5433:5432"
+    volumes:
+      - tagtrail-data:/var/lib/postgresql/data
+      # Mounted one file at a time, in order, and ONLY these three. Mounting
+      # the whole db folder would also run test_guarantees.sql, which exists
+      # to make the database refuse things and would abort the startup.
+      - ./db/001_schema.sql:/docker-entrypoint-initdb.d/001_schema.sql:ro
+      - ./db/002_functions.sql:/docker-entrypoint-initdb.d/002_functions.sql:ro
+      - ./db/003_seed.sql:/docker-entrypoint-initdb.d/003_seed.sql:ro
+      - ./db/004_store.sql:/docker-entrypoint-initdb.d/004_store.sql:ro
+    healthcheck:
+      # The API must not start against a database that is still initialising,
+      # or its first query fails and the container exits.
+      test: ["CMD-SHELL", "pg_isready -U tagtrail -d tagtrail"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: tagtrail-api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Double underscore is how .NET reads nested configuration from the
+      # environment. This overrides whatever is in appsettings.json, so the
+      # file's password is irrelevant here.
+      ConnectionStrings__TagTrail: "Host=db;Port=5432;Database=tagtrail;Username=tagtrail;Password=tagtrail"
+      ASPNETCORE_ENVIRONMENT: "Development"
+    ports:
+      - "5000:8080"
+    volumes:
+      # The console is a single static file. Baking it into the image meant a
+      # full .NET rebuild to change one line of HTML — and, worse, that an
+      # edited file sitting on disk had no effect at all, which looks exactly
+      # like the edit not working. Mounted here, a browser refresh is enough.
+      #
+      # It shadows the copy inside the image rather than replacing it: if this
+      # folder is ever missing, the container serves the built-in one instead
+      # of serving nothing.
+      - ./api/wwwroot:/app/wwwroot:ro
+    restart: unless-stopped
+
+volumes:
+  tagtrail-data:

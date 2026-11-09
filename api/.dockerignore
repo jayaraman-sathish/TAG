@@ -1,0 +1,8 @@
+# Keep the build context small and, more importantly, keep host build output
+# out of the image: bin/ and obj/ from a Windows build will confuse a Linux
+# container build in ways that are tedious to diagnose.
+bin/
+obj/
+*.user
+*.log
+.vs/

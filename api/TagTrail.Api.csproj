@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Off while the project is being brought up, so a nullable-reference
+         warning does not stop you running it. Turn it back on before this
+         goes anywhere near a plant: in code that writes a statutory register,
+         a nullable warning is a null asset code waiting to happen. -->
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Npgsql and Dapper, not EF Core. The schema is hand-written and
+         authoritative; EF migrations would want to "correct" the partial
+         unique indexes, check constraints and append-only triggers that are
+         the whole point of it. -->
+    <PackageReference Include="Npgsql" Version="8.0.5" />
+    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+  </ItemGroup>
+
+</Project>

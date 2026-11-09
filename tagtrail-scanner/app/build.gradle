@@ -1,0 +1,38 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.tagtrail.scanner'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.tagtrail.scanner"
+        // MC3330xR ships Android 10 or newer. 26 is the floor for adaptive icons.
+        minSdk 26
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildFeatures {
+        buildConfig true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+// No dependencies. Deliberately: this builds against android.jar alone, so it
+// needs nothing from maven.google.com beyond the Android Gradle plugin itself.
+dependencies {
+}

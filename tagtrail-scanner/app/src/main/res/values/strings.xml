@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TagTrail</string>
+    <string name="settings">Reader setup</string>
+
+    <string name="cannot_reach_title">Can\'t reach the register</string>
+    <string name="cannot_reach">Tried %1$s\n\n%2$s</string>
+    <string name="retry">Try again</string>
+    <string name="open_settings">Change the address</string>
+
+    <string name="reload">Reload</string>
+    <string name="exit">Close TagTrail</string>
+    <string name="menu_title">TagTrail</string>
+
+    <string name="url_label">Address of the register</string>
+    <string name="url_hint">http://192.168.1.20:5000</string>
+    <string name="url_help">The laptop or server running TagTrail. This reader must be on the same wifi or hotspot.</string>
+    <string name="test">Test</string>
+    <string name="save_and_open">Save and open</string>
+
+    <string name="dw_title">Zebra DataWedge</string>
+    <string name="dw_help">TagTrail sets up its own DataWedge profile — RFID on, intent output on, keyboard output off. It does this the first time it runs. Press below if you have changed DataWedge by hand and want it put back.</string>
+    <string name="dw_button">Set up DataWedge again</string>
+
+    <string name="diag_title">What the reader last sent</string>
+    <string name="diag_help">Every intent that arrives from DataWedge is recorded here, whether TagTrail understood it or not. If tags are not reaching the screen, this is the place to look.</string>
+    <string name="diag_empty">Nothing yet. Pull the trigger.</string>
+    <string name="clear">Clear</string>
+</resources>

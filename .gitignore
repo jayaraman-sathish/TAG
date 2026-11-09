@@ -1,0 +1,38 @@
+# ---------------------------------------------------------------- secrets --
+# setup.bat writes the real Postgres password into appsettings.json in plain
+# text. It belongs on the machine, never in the repository. Clone the repo,
+# copy appsettings.example.json over it, and fill in the password locally.
+api/appsettings.json
+api/appsettings.Development.json
+api/appsettings.Production.json
+!api/appsettings.example.json
+
+# ------------------------------------------------------------------- data --
+# A dump holds whatever was in the register. Demo data today, Panasonic's
+# asset register tomorrow, so it is out by default.
+backup.sql
+*.dump
+*.bak
+*.log
+
+# ------------------------------------------------------- .NET build output --
+[Bb]in/
+[Oo]bj/
+*.user
+
+# ------------------------------------------------------------------ Android --
+.gradle/
+local.properties
+tagtrail-scanner/build/
+tagtrail-scanner/app/build/
+tagtrail-scanner/.idea/
+*.apk
+*.aab
+*.iml
+captures/
+
+# ----------------------------------------------------- editors and Windows --
+.vs/
+.idea/
+Thumbs.db
+desktop.ini

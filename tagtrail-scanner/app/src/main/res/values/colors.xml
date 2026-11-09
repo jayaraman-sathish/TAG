@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="teal">#FF0D5C63</color>
+    <color name="teal_dark">#FF094348</color>
+    <color name="bg">#FFF4F5F6</color>
+    <color name="card">#FFFFFFFF</color>
+    <color name="ink">#FF16262E</color>
+    <color name="muted">#FF5F7078</color>
+    <color name="line">#FFE2E6E8</color>
+    <color name="danger">#FFA32B22</color>
+    <color name="ok">#FF1F5C3A</color>
+</resources>
